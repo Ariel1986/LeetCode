@@ -13,7 +13,6 @@ Follow up:
 Could you do it in O(n) time and O(1) space?
 */
 
-
 //code 1:
 /**
  * Definition for singly-linked list.
@@ -24,6 +23,41 @@ Could you do it in O(n) time and O(1) space?
  * };
  */
 
+class Solution {
+public:
+    bool isPalindrome(ListNode* head) {
+        if(head == nullptr || head->next == nullptr){ return true; }
+        
+        ListNode *pPre = nullptr, *pSlow = head, *pFast = head;
+        
+        while(pFast != nullptr && pFast->next != nullptr){
+            pFast = pFast->next;
+            if(pFast != nullptr){
+                pFast = pFast->next;
+            }
+            
+            //反转前面的链表
+            ListNode *pNext = pSlow->next;
+            pSlow->next = pPre;
+            pPre = pSlow;
+            pSlow = pNext;
+        }
+        if(pFast != nullptr){  //list长度为奇数
+            pSlow = pSlow->next;
+        }
+        
+        while(pSlow != nullptr){
+            if(pSlow->val != pPre->val){
+                return false;
+            }
+            pSlow = pSlow->next;
+            pPre = pPre->next;
+        }
+        return true;
+    }
+};
+
+//code 2:
 class Solution {
 public:
     bool isPalindrome(ListNode* head) {
@@ -66,7 +100,7 @@ public:
     }
 };
 
-//code2:
+//code3:
 class Solution {
 public:
     bool helper(ListNode** root, ListNode* head){
