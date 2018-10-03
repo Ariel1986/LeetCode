@@ -23,6 +23,8 @@ Your code should preferably run in O(n) time and use only O(1) memory.
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+
+//Code 1:
 class Solution {
 public:
     ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
@@ -56,5 +58,54 @@ public:
         }
         
         return headA;
+    }
+};
+
+//Code 2:
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        ListNode *curA = headA, *curB = headB;
+        while(curA != curB){
+            curA = curA == nullptr? headA: curA->next;
+            curB = curB == nullptr? headB: curB->next;
+        }
+        
+        return curA;
+    }
+};
+
+//Code 3:
+/*转变成有环链表的第一个节点问题*/
+class Solution {
+public:
+    ListNode *getIntersectionNode(ListNode *headA, ListNode *headB) {
+        if(headA == nullptr || headB == nullptr){ return nullptr; }
+        ListNode *curA = headA;
+        while(curA->next != nullptr){
+            curA = curA->next;
+        }
+        curA->next = headB;
+        
+        //Find the start of loop
+        ListNode *pSlow = headA, *pFast = headA;
+        while(pFast != nullptr && pFast->next!= nullptr){
+            pSlow = pSlow->next;
+            pFast = pFast->next->next;
+            
+            if(pSlow == pFast){
+                pFast = headA;
+                while(pFast != pSlow){
+                    pFast = pFast->next;
+                    pSlow = pSlow->next;
+                }
+                curA->next = nullptr;
+                return pSlow;
+            }
+        }
+        
+        //no loop find, return nullptr
+        curA->next = nullptr;
+        return nullptr;
     }
 };
