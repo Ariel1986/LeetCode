@@ -23,22 +23,17 @@ Show Similar Problems
 class Solution {
 public:
     bool hasCycle(ListNode *head) {
-        if(head == nullptr || head->next == nullptr)  //Whether the head->next is nullptr
-            return false;
-        
-        ListNode* pSlow = head;
-        ListNode* pFast = head->next->next;
-        while(pFast)
-        {
-            if(pFast == pSlow) 
-                return true;
+        if(head == nullptr || head->next == nullptr){ return false; }
+        ListNode *pSlow = head, *pFast = head;
+        while(pFast != nullptr && pFast->next != nullptr){
             pSlow = pSlow->next;
-            if(pFast != nullptr && pFast->next != nullptr)
-                pFast = pFast->next->next;
-            else 
-                return false;
+            pFast = pFast->next->next;
+            if(pFast == pSlow){
+                return true;
+            }
         }
         
         return false;
     }
 };
+
