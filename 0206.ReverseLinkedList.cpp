@@ -22,12 +22,12 @@ Similar Problems: 92, 234
 class Solution {
 public:
     ListNode* reverseList(ListNode* head) {
-        ListNode* pre = nullptr;
-        ListNode* cur = head;
+        ListNode *pre = nullptr;
+        ListNode *cur = head;
         
         while(cur != nullptr)
         {
-            ListNode* pNext = cur->next;
+            ListNode *pNext = cur->next;
             cur->next = pre;
             pre = cur;
             cur = pNext;
