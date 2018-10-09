@@ -19,6 +19,10 @@ class Solution {
 public:
     ListNode* mergeKLists(std::vector<ListNode*>& lists) {
         std::priority_queue<ListNode*, std::vector<ListNode*>, cmp>pq;
+	
+	//另一种传比较函数的方法
+	//auto cmp = [](ListNode* l, ListNode* r) { return l->val > r->val;};
+        //std::priority_queue<ListNode*, std::vector<ListNode*>, decltype(cmp)> pq(cmp);    
         
         for(auto node: lists){
             if(node != nullptr){
@@ -44,8 +48,6 @@ public:
 };
 
 //Code： 使用heap
-
-//code 1:
 class Solution {
 public:
     static bool compare(ListNode *l1, ListNode *l2){
