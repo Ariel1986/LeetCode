@@ -52,8 +52,41 @@ public:
         return dummyHead.next;
     }
 };
+//Code: 使用heap 1:
+class Solution {
+public:
+    ListNode* mergeKLists(std::vector<ListNode*>& lists) {
+        if(lists.size() == 0){return nullptr;}
+        
+        std::vector<ListNode*> v;
+        for(auto node : lists){
+            if(node){
+                v.push_back(node);
+            }
+        }
+        std::make_heap(v.begin(), v.end(), cmp());
+      
+        ListNode dummyHead(0);
+        ListNode *tail = &dummyHead;
+        while(!v.empty()){
+            //pop element
+            std::pop_heap(v.begin(), v.end(),cmp());
+            tail->next = v.back();
+            tail = tail->next;
+            v.pop_back();
 
-//Code： 使用heap
+            //push element
+            if(tail->next != nullptr){
+               v.emplace_back(tail->next);
+                std::push_heap(v.begin(), v.end(),cmp());
+            }
+        }
+        
+        return dummyHead.next;
+    }
+};
+
+//Code： 使用heap 2
 class Solution {
 public:
     static bool compare(ListNode *l1, ListNode *l2){
