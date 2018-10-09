@@ -21,7 +21,13 @@ public:
         std::priority_queue<ListNode*, std::vector<ListNode*>, cmp>pq;
 	
 	//另一种传比较函数的方法
-	//auto cmp = [](ListNode* l, ListNode* r) { return l->val > r->val;};
+	//auto cmp = [](ListNode* l, ListNode* r) {
+        //    if(l == nullptr || r == nullptr) {
+        //        return false;
+        //    }
+        //    return l->val > r->val;
+        //};
+
         //std::priority_queue<ListNode*, std::vector<ListNode*>, decltype(cmp)> pq(cmp);    
         
         for(auto node: lists){
