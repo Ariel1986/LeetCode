@@ -13,6 +13,109 @@ Tags: Divide and Conquer Linked List Heap
  *     ListNode(int x) : val(x), next(NULL) {}
  * };
  */
+
+//Code : 使用priority_queue
+class Solution {
+public:
+    ListNode* mergeKLists(std::vector<ListNode*>& lists) {
+        std::priority_queue<ListNode*, std::vector<ListNode*>, cmp>pq;
+        
+        for(auto node: lists){
+            if(node != nullptr){
+                pq.push(node);
+            }
+        }
+        
+        ListNode dummyHead(0);
+        ListNode *tail = &dummyHead;
+        
+       while(!pq.empty()){
+           tail->next = pq.top();
+           tail = tail->next;
+           pq.pop();
+           
+           if(tail->next != nullptr){
+                pq.emplace(tail->next);
+            }
+        }
+        
+        return dummyHead.next;
+    }
+};
+
+//Code： 使用heap
+
+//code 1:
+class Solution {
+public:
+    static bool compare(ListNode *l1, ListNode *l2){
+        if(l1 == NULL) return true;
+        if(l2 == NULL) return false;
+        return (l1->val > l2->val);
+    }
+    
+    ListNode* mergeKLists(vector<ListNode*>& lists) {
+        if(lists.size() == 0) return NULL;
+        make_heap(lists.begin(), lists.end(), compare);
+        return help(lists);
+    }
+    
+    ListNode * help(vector<ListNode*>& lists){
+        ListNode * l = lists.front();
+        if(!l) return NULL;
+        pop_heap(lists.begin(), lists.end(), compare); lists.pop_back();   //pop top from the heap
+        lists.push_back(l->next); push_heap(lists.begin(), lists.end(), compare); //insert the list to the heap
+        l->next = help(lists);
+        return l;
+    }
+};
+
+//code 2:
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func mergeHelper(list1 *ListNode, list2 *ListNode) *ListNode {
+	if list1 == nil && list2 == nil {
+		return nil
+	} else if list1 == nil {
+		return list2
+	} else if list2 == nil {
+		return list1
+	} else if list1.Val < list2.Val {
+		list1.Next = mergeHelper(list1.Next, list2)
+		return list1
+	} else {
+		list2.Next = mergeHelper(list1, list2.Next)
+		return list2
+	}
+}
+
+func mergeKLists(lists []*ListNode) *ListNode {
+	if len(lists) == 0 {
+		return nil
+	}
+	for true {
+		if len(lists) == 1 {
+			break
+		}
+		var dummyLists []*ListNode
+		i := 0
+		for iEnd := len(lists) - 1; i < iEnd; i += 2 {
+			dummyLists = append(dummyLists, mergeHelper(lists[i], lists[i+1]))
+		}
+		if i == len(lists)-1 {
+			dummyLists = append(dummyLists, lists[i])
+		}
+		lists = dummyLists
+	}
+	return lists[0]
+}
+
+//by cpp
 class Solution {
 public:
     ListNode* mergeKLists(vector<ListNode*>& lists) {
@@ -111,47 +214,3 @@ public:
         return dummyHead.next;
     }
 
-//code 3:
-/**
- * Definition for singly-linked list.
- * type ListNode struct {
- *     Val int
- *     Next *ListNode
- * }
- */
-func mergeHelper(list1 *ListNode, list2 *ListNode) *ListNode {
-	if list1 == nil && list2 == nil {
-		return nil
-	} else if list1 == nil {
-		return list2
-	} else if list2 == nil {
-		return list1
-	} else if list1.Val < list2.Val {
-		list1.Next = mergeHelper(list1.Next, list2)
-		return list1
-	} else {
-		list2.Next = mergeHelper(list1, list2.Next)
-		return list2
-	}
-}
-
-func mergeKLists(lists []*ListNode) *ListNode {
-	if len(lists) == 0 {
-		return nil
-	}
-	for true {
-		if len(lists) == 1 {
-			break
-		}
-		var dummyLists []*ListNode
-		i := 0
-		for iEnd := len(lists) - 1; i < iEnd; i += 2 {
-			dummyLists = append(dummyLists, mergeHelper(lists[i], lists[i+1]))
-		}
-		if i == len(lists)-1 {
-			dummyLists = append(dummyLists, lists[i])
-		}
-		lists = dummyLists
-	}
-	return lists[0]
-}
