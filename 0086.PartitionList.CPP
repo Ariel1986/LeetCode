@@ -11,6 +11,32 @@ Tags: Linked List, Two Pointers
 只需要从当前比x大的节点p1->next开始,找比x小的第一个节点p2->next，然后将该节点插到p1后面即可
 */
 
+//code:
+func partition(head *ListNode, x int) *ListNode {
+	if head == nil {
+		return head
+	}
+	d1 := ListNode{Next: head}
+	p1 := &d1
+	d2 := ListNode{Next: head}
+	p2 := &d2
+	pCur := head
+	for pCur != nil {
+		if pCur.Val < x { //插入到链表中
+			p1.Next = pCur
+			p1 = p1.Next
+		} else {
+			p2.Next = pCur
+			p2 = p2.Next
+		}
+		pCur = pCur.Next
+	}
+
+	p2.Next = nil
+	p1.Next = d2.Next
+	return d1.Next
+}
+
 //Code:
 ListNode* partition(ListNode* head, int x) {
     if(head == nullptr) return nullptr;
