@@ -12,6 +12,38 @@ Tags: Linked List
 Similar Problems:206
 */
 
+//Code:
+func reverseBetween(head *ListNode, m int, n int) *ListNode {
+	if head == nil || m < 0 || n < 0 || m > n {
+		return head
+	}
+	dummyHead := ListNode{Next: head}
+
+	pEnd := head
+	for i := 1; i <= n && pEnd != nil; i++ {
+		pEnd = pEnd.Next
+	}
+
+	pPre := &dummyHead
+	pBeg := head
+	for i := 1; i < m && pBeg != nil; i++ {
+		pBeg = pBeg.Next
+		pPre = pPre.Next
+	}
+
+	//reverse [pBeg,pEnd)
+	pTail := pBeg
+	for pBeg != pEnd {
+		pNext := pBeg.Next
+		pBeg.Next = pPre.Next
+		pPre.Next = pBeg
+		pBeg = pNext
+	}
+
+	pTail.Next = pEnd
+	return dummyHead.Next
+}
+
 /*思路:
 方法一对要反转的元素仅访问一次。存储要反转元素的前面元素和后面元素。
 */
