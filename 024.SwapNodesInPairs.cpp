@@ -7,6 +7,32 @@ Subscribe to see which companies asked this question
 Tags: Lined List
 */
 
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func swapPairs(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	dummyHead := ListNode{}
+	pPre, pCur := &dummyHead, head
+	for pCur != nil && pCur.Next != nil {
+		pPre.Next = pCur.Next.Next
+		pCur.Next.Next = pCur
+		pCur.Next, pPre.Next = pPre.Next, pCur.Next
+		pCur = pCur.Next
+		pPre = pPre.Next.Next
+	}
+	if pCur != nil {
+		pPre.Next = pCur
+	}
+	return dummyHead.Next
+}
+
 /*思路：
 连续处理链表的两个元素，注意考虑链表有偶数个元素和奇数个元素两种情况
 Note：对于头结点指针要处理的情况，可以添加一个链表节点指向链表的第一个节点，从而将第一个节点的处理情况与后面节点的处理情况一致化
