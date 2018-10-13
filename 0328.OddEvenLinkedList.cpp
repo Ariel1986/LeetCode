@@ -9,6 +9,40 @@ Note:
 The relative order inside both the even and odd groups should remain as it was in the input. 
 The first node is considered odd, the second node even and so on ...
 */
+//code:
+/**
+ * Definition for singly-linked list.
+ * type ListNode struct {
+ *     Val int
+ *     Next *ListNode
+ * }
+ */
+func oddEvenList(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+
+	h1 := ListNode{}
+	h2 := ListNode{}
+	pOdd, pEven := &h1, &h2
+	pCur := head
+	for pCur != nil && pCur.Next != nil {
+		pOdd.Next = pCur
+		pEven.Next = pCur.Next
+		pCur = pCur.Next.Next
+		pOdd = pOdd.Next
+		pEven = pEven.Next
+		fmt.Printf("pCur: %d, pOdd: %d, pEven: %d\n", pCur.Val, pOdd.Val, pEven.Val)
+	}
+
+	pEven.Next = nil
+	if pCur != nil { //奇数个链表
+		pOdd.Next = pCur
+		pOdd = pOdd.Next
+	}
+	pOdd.Next = h2.Next
+	return h1.Next
+}
 
 //Code:
 //Code 1:同时处理奇偶节点
