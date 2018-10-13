@@ -32,7 +32,6 @@ func oddEvenList(head *ListNode) *ListNode {
 		pCur = pCur.Next.Next
 		pOdd = pOdd.Next
 		pEven = pEven.Next
-		fmt.Printf("pCur: %d, pOdd: %d, pEven: %d\n", pCur.Val, pOdd.Val, pEven.Val)
 	}
 
 	pEven.Next = nil
